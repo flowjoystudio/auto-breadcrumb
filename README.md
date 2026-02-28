@@ -117,13 +117,39 @@ Add `fj-breadcrumb-home` to the wrapper element to change the label for `level-1
 
 ## Webflow setup
 
-1. Build your breadcrumb component in Webflow and style it exactly as you want
-2. Add `fj-breadcrumb` / `auto` as a custom attribute on the wrapper element
-3. Add `fj-breadcrumb` / `level-1` on the home item, `level-2` on the next, and so on
-4. Optionally add `fj-breadcrumb-label` on any level where the auto-generated label needs overriding
-5. Add as many levels as your deepest page requires — unused ones will be removed automatically
+### Step 1 — Add the script
 
-> **Tip:** Add separators (e.g. `/` or `›`) as separate styled elements between your level elements. Since they aren't level elements themselves, the script won't touch them. If a level is removed, you may want to handle separator visibility with CSS using `:empty` or adjacent sibling selectors.
+Paste the `<script>` tag into **Project Settings → Custom Code → Head Code**, or into **Page Settings → Custom Code → Before </body> tag** for page-specific use.
+
+### Step 2 — Build your breadcrumb component
+
+Build and style your breadcrumb exactly how you want it in Webflow. Add as many level elements as your deepest URL structure requires — unused ones will be removed from the DOM automatically.
+
+A typical structure in the Navigator might look like:
+
+```
+Nav (fj-breadcrumb = auto)
+├── Link Block (fj-breadcrumb = level-1)   ← Home
+├── Text Block                              ← Separator e.g. /
+├── Link Block (fj-breadcrumb = level-2)   ← First URL segment
+├── Text Block                              ← Separator e.g. /
+└── Link Block (fj-breadcrumb = level-3)   ← Second URL segment
+```
+
+### Step 3 — Add attributes
+
+In the Webflow Designer, open the **Navigator** panel (Cmd/Ctrl + U) to locate the correct elements. Select each element, open the **Element Settings** panel (D key), scroll down to **Custom Attributes**, and add the attribute name and value.
+
+| Element | Where to find it in Navigator | Attribute | Value |
+|---|---|---|---|
+| Breadcrumb wrapper | The Nav element or Div Block containing all levels | `fj-breadcrumb` | `auto` |
+| Home item | The first Link Block or Div Block | `fj-breadcrumb` | `level-1` |
+| First URL segment item | The second Link Block or Div Block | `fj-breadcrumb` | `level-2` |
+| Second URL segment item | The third Link Block or Div Block | `fj-breadcrumb` | `level-3` |
+| Label override (optional) | Any level element that needs a custom label | `fj-breadcrumb-label` | Your custom label |
+| Text child (optional) | A Text Block inside a level Div, if text is separate from the link | `fj-breadcrumb-text` | *(no value needed)* |
+
+> **Tip:** Separator elements (Text Blocks with `/` or `›`) sit between level elements in the Navigator. Since they don't have a `fj-breadcrumb` attribute, the script ignores them. If a level is removed from the DOM, handle orphaned separators in CSS using adjacent sibling selectors.
 
 ---
 
